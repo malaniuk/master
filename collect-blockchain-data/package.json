@@ -1,0 +1,47 @@
+{
+  "name": "collect-blockchain-data",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "rm -rf ./dist",
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "build-run": "npm run build && npm run start",
+    "start:dev": "ts-node-dev --respawn --transpile-only src/index.ts  | pino-pretty -l -S",
+    "prisma:dev": "npx prisma migrate dev",
+    "prisma:prod": "npx prisma migrate deploy",
+    "prisma:studio": "npx prisma studio"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.59",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "prettier": "^3.3.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@malaniuk/tkit-date": "^1.0.6",
+    "axios": "^1.7.7",
+    "coingecko-api-v3": "^0.0.29",
+    "decimal.js": "^10.4.3",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.4",
+    "etherscan-api": "^10.3.0",
+    "mongodb": "^6.11.0",
+    "moralis": "^2.27.2",
+    "telegram": "^2.26.8",
+    "web3": "^4.15.0"
+  },
+  "engines": {
+    "node": "18.x"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
