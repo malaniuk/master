@@ -41,7 +41,6 @@ export const collectNodeData = async (
     },
   };
 
-  await connection;
   await nodes.insertOne(nodeData);
 
   const connected = getConnectedAddresses(address, txs);

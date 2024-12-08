@@ -1,20 +1,29 @@
-import 'dotenv/config';
-
-import { processQueue } from './process-queue';
-
-// Breadth-First Search (BFS) approach for exploring the blockchain network
-const collectNetworkData = async (address: string, maxDepth: number) => {
-  console.log(`collectNetworkData ${address} ${maxDepth}`);
-
-  const visited = new Set<string>();
-  const queue: any[] = [{ address, depth: 0 }];
-  const networkData: any[] = [];
-
-  return processQueue(visited, queue, networkData, maxDepth);
-};
-
+import { sleep  } from '@malaniuk/tkit-date';
+import { connection, findLastNotProcessedTask, tasksStatistic, updateTaskStatus } from './db';
+import { collectNodeData } from './collect-node-data';
 
 (async () => {
-  const address = process.env.ADDRESS;
-  await collectNetworkData(address, 1);
+  await connection;
+
+  while (true) {
+    const [open, failed] = await tasksStatistic();
+    console.log(`Tasks: open: ${open} failed: ${failed}`);
+
+    const openTask = await findLastNotProcessedTask();
+    if (!openTask) {
+      await sleep(1000);
+    }
+
+    try {
+      await collectNodeData(openTask.address, openTask.depth);
+      await updateTaskStatus(openTask._id, 'processed');
+    } catch (e) {
+      console.error(`Error processing task ${openTask._id}`);
+      console.error(e);
+
+      await updateTaskStatus(openTask._id, 'failed');
+    }
+
+    await sleep(1000);
+  }
 })();
