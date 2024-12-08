@@ -1,6 +1,6 @@
 import { sleep  } from '@malaniuk/tkit-date';
 import { connection, findLastNotProcessedTask, tasksStatistic, updateTaskStatus } from './db';
-import { collectNodeData } from './collect-node-data';
+import { collectNetworkData } from './collect-network-data';
 
 (async () => {
   await connection;
@@ -15,7 +15,7 @@ import { collectNodeData } from './collect-node-data';
     }
 
     try {
-      await collectNodeData(openTask.address, openTask.depth);
+      await collectNetworkData(openTask.address, openTask.depth);
       await updateTaskStatus(openTask._id, 'processed');
     } catch (e) {
       console.error(`Error processing task ${openTask._id}`);
